@@ -38,7 +38,7 @@
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    if(index===undefined){
+    if(n===undefined){
           return array[array.length-1];
         }
         else if (n===0){
@@ -99,13 +99,16 @@
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    return _.filter(collection,function(x){return !test(x)});
+    return _.filter(collection,function(x){return !test(x);});
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
   };
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
+    var unique = [];
+    _.each(array, function(x){if(_.indexOf(unique,x)===-1){unique.push(x);}});
+    return unique;
   };
 
 
