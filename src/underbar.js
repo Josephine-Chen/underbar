@@ -168,6 +168,7 @@
     for(var i =0;i<collection.length;i++){
       accumulator=iterator(accumulator,collection[i]);
     }
+    console.log(accumulator);
     return accumulator;
   };
 
@@ -186,6 +187,17 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
+    if (collection.length===0){
+      return true;
+    }
+    else if(iterator===undefined){
+      return _.reduce(collection,function (x){return (x==true)?true:false;});
+    }
+    else{
+
+      return _.reduce(collection,function(x){
+        return (iterator(x)==true)?true:false;});
+    }
     // TIP: Try re-using reduce() here.
   };
 
@@ -214,12 +226,19 @@
   //   }, {
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
-  _.extend = function(obj) {
+  _.extend = function(destination,source) {
+    for(var i=0;i<arguments.length;i++){
+      var src = arguments[i];
+      for (var key in src){
+        destination[key]=src[key];
+      }
+    }
+    return destination;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
-  _.defaults = function(obj) {
+  _.defaults = function(destination,source) {
   };
 
 
