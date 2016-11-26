@@ -239,6 +239,15 @@
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(destination,source) {
+    for(var i=0; i<arguments.length;i++){
+      var src = arguments[i];
+      for(var key in src){
+        if (!destination.hasOwnProperty(key)){
+          destination[key]=src[key];
+        }
+      }
+    }
+    return destination;
   };
 
 
