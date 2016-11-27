@@ -290,23 +290,21 @@
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
-    var result;
-    var pastArguments;
-    var same = false;
-    var arg = Array.prototype.slice.call(arguments);
-    if(JSON.stringify(pastArguments)===JSON.stringify(arg)){
-      same=true;
-    }
-
+    //Save previous calls to Object previous
+    var previous = {};
     return function(){
-      if(!same){
-        result = func.apply(this,arguments);
-        pastArguments=arguments;
+      var arg = JSON.stringify(arguments);
+      //check if arguments have been called previously
+      if(previous[arg]){
+        return previous[arg];
       }
-      
-      return result;
-    };
-    
+      else {
+        var result = func.apply(this,arguments);
+        //assign result to arguments
+        previous[arg] = result;
+        return result;
+      };
+    }
   };
 
   // Delays a function for the given number of milliseconds, and then calls
