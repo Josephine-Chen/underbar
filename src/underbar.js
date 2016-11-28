@@ -202,14 +202,25 @@
     if (collection.length===0){
       return true;
     }
-    else if(iterator===undefined){
-      return _.reduce(collection,function (x){return (x==true)?true:false;});
+    //Handle boolean result
+    if(collection.length===1){
+      return (collection[0]==true)?true:false;
     }
-    else{
-
-      return _.reduce(collection,function(x){
-        return (iterator(x)==true)?true:false;});
-    }
+    return _.reduce(collection,function(memo,x){
+      //Handle empty objects as true
+      if(x!==null && typeof x == "object"){
+        if(Object.keys(x).length===0){
+          x=true;
+        }
+      }
+      //Handle no iterator case
+      if(iterator===undefined){
+        return (memo==true&&x==true||undefined)? true:false;  
+      }
+      else{
+        return (memo==true&&iterator(x)==true)? true:false;
+      }
+    },true);
     // TIP: Try re-using reduce() here.
   };
 
