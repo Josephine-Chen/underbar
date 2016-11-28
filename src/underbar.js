@@ -161,12 +161,26 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    if(accumulator===undefined){
+    //Use first element is no accumulator
+    if(Array.isArray(collection)){
+      if(accumulator===undefined){
       accumulator=collection[0];
       collection=collection.slice(1);
     }
-    for(var i =0;i<collection.length;i++){
-      accumulator=iterator(accumulator,collection[i]);
+      for(var i =0;i<collection.length;i++){
+        accumulator=iterator(accumulator,collection[i]);
+      }
+    }
+    else{
+      if(accumulator===undefined){
+        var key = Object.keys(collection);
+        accumulator=collection[key[0]];
+        delete collection[key[0]];
+      }
+
+      for(var prop in collection){
+        accumulator=iterator(accumulator,collection[prop]);
+      }
     }
     return accumulator;
   };
@@ -182,7 +196,6 @@
       return item === target;
     }, false);
   };
-
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
